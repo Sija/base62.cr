@@ -14,12 +14,14 @@ module Base62
   # Inverted character set (`[0-9a-zA-Z]`).
   CHARSET_INVERTED = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
+  extend self
+
   # Checks whether a *string* is base62-compatible.
   #
   # ```
   # Base62.compatible?("15Ew2nYeRDscBipuJicYjl970D1") # => true
   # ```
-  def self.compatible?(string : String, charset = CHARSET_DEFAULT) : Bool
+  def compatible?(string : String, charset = CHARSET_DEFAULT) : Bool
     string.each_char.all? { |char| charset.includes?(char) }
   end
 
@@ -28,7 +30,7 @@ module Base62
   # ```
   # Base62.decode("0000000000000000000001LY7VK") # => 1234567890
   # ```
-  def self.decode(string : String, charset = CHARSET_DEFAULT) : BigInt
+  def decode(string : String, charset = CHARSET_DEFAULT) : BigInt
     result = BigInt.zero
     base = charset.size
 
@@ -46,7 +48,7 @@ module Base62
   # ```
   # Base62.encode(1_234_567_890) # => "1LY7VK"
   # ```
-  def self.encode(number : Int, charset = CHARSET_DEFAULT) : String
+  def encode(number : Int, charset = CHARSET_DEFAULT) : String
     return charset[0].to_s if number.zero?
 
     base = charset.size
@@ -65,7 +67,7 @@ module Base62
   # Base62.encode("\xFF" * 4)           # => "4gfFC3"
   # Base62.encode(Bytes.new(4, 255_u8)) # => "4gfFC3"
   # ```
-  def self.encode(value : String | Bytes, charset = CHARSET_DEFAULT) : String
+  def encode(value : String | Bytes, charset = CHARSET_DEFAULT) : String
     value = value.to_slice if value.is_a?(String)
     value = value.to_a
       .map(&.to_s(2).rjust(8, '0'))
