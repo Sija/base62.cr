@@ -43,22 +43,53 @@ module Base62
     result
   end
 
+  # Writes the base62-encoded version of *number* to the given `IO` object.
+  # Returns the number of bytes written.
+  #
+  # ```
+  # Base62.encode(1_234_567_890, STDOUT) # => 6
+  # ```
+  def encode(number : Int, io : IO, charset = CHARSET_DEFAULT) : Int32
+    if number.zero?
+      io << charset[0]
+      return 1
+    end
+    base = charset.size
+    chars = [] of Char
+    while number > 0
+      number, remainder = number.divmod(base)
+      chars << charset[remainder]
+    end
+    chars.reverse!
+    chars.each do |char|
+      io << char
+    end
+    chars.size
+  end
+
   # Returns the base62-encoded version of *number* as a `String`.
   #
   # ```
   # Base62.encode(1_234_567_890) # => "1LY7VK"
   # ```
   def encode(number : Int, charset = CHARSET_DEFAULT) : String
-    return charset[0].to_s if number.zero?
+    String.build { |io| encode(number, io, charset) }
+  end
 
-    base = charset.size
-    str = String.build do |io|
-      while number > 0
-        number, remainder = number.divmod(base)
-        io << charset[remainder]
-      end
-    end
-    str.reverse
+  # Writes the base62-encoded version of *value* to the given `IO` object.
+  # Returns the number of bytes written.
+  #
+  # ```
+  # Base62.encode("\xFF" * 4, STDOUT)           # => 6
+  # Base62.encode(Bytes.new(4, 255_u8), STDOUT) # => 6
+  # ```
+  def encode(value : String | Bytes, io : IO, charset = CHARSET_DEFAULT) : Int32
+    value = value.to_slice if value.is_a?(String)
+    value = value.to_a
+      .map(&.to_s(2).rjust(8, '0'))
+      .join
+      .to_big_i(2)
+    encode(value, io, charset)
   end
 
   # Returns the base62-encoded version of *value* as a `String`.
@@ -68,11 +99,6 @@ module Base62
   # Base62.encode(Bytes.new(4, 255_u8)) # => "4gfFC3"
   # ```
   def encode(value : String | Bytes, charset = CHARSET_DEFAULT) : String
-    value = value.to_slice if value.is_a?(String)
-    value = value.to_a
-      .map(&.to_s(2).rjust(8, '0'))
-      .join
-      .to_big_i(2)
-    encode(value, charset)
+    String.build { |io| encode(value, io, charset) }
   end
 end

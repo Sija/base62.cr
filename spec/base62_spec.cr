@@ -64,4 +64,22 @@ describe Base62 do
       encoded.should eq("4gfFC3")
     end
   end
+
+  context "with given IO" do
+    it "appends encoded string" do
+      number = "1922549000510644890748".to_big_i
+
+      io = IO::Memory.new
+      Base62.encode(number, io)
+      io.to_s.should eq("awesomesauce")
+    end
+
+    it "returns number of bytes written" do
+      number = "1922549000510644890748".to_big_i
+
+      io = IO::Memory.new
+      count = Base62.encode(number, io)
+      count.should eq(12)
+    end
+  end
 end
