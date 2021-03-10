@@ -1,4 +1,4 @@
-# Base62.cr [![Build Status](https://travis-ci.org/Sija/base62.cr.svg?branch=master)](https://travis-ci.org/Sija/base62.cr) [![Releases](https://img.shields.io/github/release/Sija/base62.cr.svg)](https://github.com/Sija/base62.cr/releases) [![License](https://img.shields.io/github/license/Sija/base62.cr.svg)](https://github.com/Sija/base62.cr/blob/master/LICENSE)
+# Base62.cr [![CI](https://github.com/Sija/base62.cr/actions/workflows/ci.yml/badge.svg)](https://github.com/Sija/base62.cr/actions/workflows/ci.yml) [![Releases](https://img.shields.io/github/release/Sija/base62.cr.svg)](https://github.com/Sija/base62.cr/releases) [![License](https://img.shields.io/github/license/Sija/base62.cr.svg)](https://github.com/Sija/base62.cr/blob/master/LICENSE)
 
 Crystal shard for Base62 encoding/decoding. It's especially useful for
 converting data into shortened strings suitable for URL shortening and/or
