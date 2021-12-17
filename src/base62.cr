@@ -22,7 +22,7 @@ module Base62
   # Base62.compatible?("15Ew2nYeRDscBipuJicYjl970D1") # => true
   # ```
   def compatible?(string : String, charset = CHARSET_DEFAULT) : Bool
-    string.each_char.all? { |char| charset.includes?(char) }
+    string.each_char.all?(&.in?(charset))
   end
 
   # Returns the base62-decoded version of *string* as a `BigInt`.
