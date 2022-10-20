@@ -7,7 +7,7 @@ APIs.
 
 ## What is Base62 encoding?
 
-Base62 encoding converts numbers to ASCII strings (0-9, a-z and A-Z) and vice
+Base62 encoding converts numbers to ASCII strings (0-9, a-z, and A-Z) and vice
 versa, which typically results in comparatively short strings. Such identifiers
 also tend to be more readily identifiable by humans.
 
@@ -42,8 +42,8 @@ Base62.decode("F3", charset) # => 999
 ```
 
 Note that `charset` typically expects the respective string to contain
-exactly 62 unique character. In fact, it's also possible to use characters
-sets with more than 62 characters in order to achieve shorter identifiers
+exactly 62 unique characters. It's also possible to use character
+sets with more than 62 characters to achieve shorter identifiers
 for large numbers.
 
 ## Contributing
